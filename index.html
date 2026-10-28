@@ -1,0 +1,327 @@
+<```html>
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOTAK AJAIB: SIHAT DAN GEMBIRA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Fredoka', 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #a8ebe6 0%, #a1c4fd 50%, #c2e9fb 100%);
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        /* Animated Floating Particles */
+        .bg-particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: floatUp 8s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.3) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.1) rotate(360deg); opacity: 0; }
+        }
+
+        /* 3D Box Glow & Floating Effect */
+        .box-3d {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+
+        .box-3d:hover {
+            transform: translateY(-12px) scale(1.05) rotateX(8deg);
+            filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.25));
+        }
+
+        /* Pulse Animation */
+        .pulse-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.6)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)); transform: scale(1.03); }
+        }
+
+        /* Star Avatar Floating & Mouth Speaking Animation */
+        .star-float {
+            animation: starFloat 3s infinite ease-in-out;
+        }
+
+        @keyframes starFloat {
+            0%, 100% { transform: translateY(0px) rotate(-3deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        .speaking-mouth {
+            animation: mouthTalk 0.25s infinite alternate;
+        }
+
+        @keyframes mouthTalk {
+            0% { rx: 8; ry: 3; }
+            100% { rx: 5; ry: 10; }
+        }
+
+        /* Custom Glassmorphic Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 4px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.15);
+        }
+
+        /* Custom Confetti Effect */
+        .confetti-piece {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            top: -20px;
+            animation: confettiFall 4s ease-in-out infinite;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-3 md:p-6 text-slate-800 relative select-none">
+
+    <!-- Floating Background Particles Container -->
+    <div id="particle-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <!-- Header Controls (Audio Toggles & Audio Status) -->
+    <header class="w-full max-w-5xl flex justify-between items-center z-20 mb-2">
+        <div class="flex items-center space-x-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border-2 border-amber-300 shadow-md">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-500 text-xl animate-spin" style="animation-duration: 6s;"></i>
+            <span class="font-bold text-amber-700 text-sm md:text-base tracking-wide">Set Induksi BM Tahun 2</span>
+        </div>
+
+        <div class="flex space-x-2">
+            <button id="btn-bgm" onclick="toggleBGM()" class="bg-amber-400 hover:bg-amber-500 text-white p-3 rounded-full shadow-lg border-2 border-white transition-all transform hover:scale-110 active:scale-95" title="Muzik Latar">
+                <i class="fa-solid fa-music text-lg"></i>
+            </button>
+            <button id="btn-tts" onclick="toggleTTS()" class="bg-sky-400 hover:bg-sky-500 text-white p-3 rounded-full shadow-lg border-2 border-white transition-all transform hover:scale-110 active:scale-95" title="Suara Panduan">
+                <i class="fa-solid fa-volume-high text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="w-full max-w-4xl flex-1 flex flex-col justify-center items-center z-10 my-2">
+
+        <!-- ================= SCREEN 1: SELAMAT DATANG ================= -->
+        <section id="screen-1" class="w-full flex flex-col items-center text-center space-y-6">
+            <!-- Title Header -->
+            <div class="space-y-2">
+                <span class="bg-pink-500 text-white font-bold text-xs md:text-sm px-4 py-1.5 rounded-full uppercase tracking-wider shadow-md">Modul Pengajaran Interaktif</span>
+                <h1 class="text-3xl md:text-5xl font-extrabold text-indigo-900 drop-shadow-md tracking-wide mt-2">
+                    KOTAK AJAIB: <span class="text-pink-600">SIHAT DAN GEMBIRA</span>
+                </h1>
+            </div>
+
+            <!-- Central Floating 3D Gift Box Animation -->
+            <div class="relative cursor-pointer pulse-glow group" onclick="startAdventure()">
+                <svg class="w-56 h-56 md:w-72 md:h-72 box-3d drop-shadow-2xl" viewBox="0 0 200 200">
+                    <defs>
+                        <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FF5E7E"/>
+                            <stop offset="100%" stop-color="#FF2A55"/>
+                        </linearGradient>
+                        <linearGradient id="lidGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#FF859C"/>
+                            <stop offset="100%" stop-color="#FF5E7E"/>
+                        </linearGradient>
+                        <linearGradient id="ribbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#FFE066"/>
+                            <stop offset="100%" stop-color="#FFB703"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- Shadow Base -->
+                    <ellipse cx="100" cy="180" rx="70" ry="15" fill="rgba(0,0,0,0.15)"/>
+                    <!-- Box Body -->
+                    <rect x="40" y="80" width="120" height="90" rx="16" fill="url(#boxGrad)"/>
+                    <!-- Vertical Ribbon -->
+                    <rect x="85" y="80" width="30" height="90" fill="url(#ribbonGrad)"/>
+                    <!-- Box Lid -->
+                    <rect x="30" y="60" width="140" height="30" rx="10" fill="url(#lidGrad)"/>
+                    <!-- Lid Ribbon -->
+                    <rect x="85" y="60" width="30" height="30" fill="url(#ribbonGrad)"/>
+                    <!-- Ribbon Bow Left -->
+                    <path d="M70 45 C 40 20, 70 60, 85 60 C 85 60, 70 35, 70 45 Z" fill="url(#ribbonGrad)"/>
+                    <!-- Ribbon Bow Right -->
+                    <path d="M130 45 C 160 20, 130 60, 115 60 C 115 60, 130 35, 130 45 Z" fill="url(#ribbonGrad)"/>
+                    <!-- Ribbon Knot -->
+                    <circle cx="100" cy="58" r="10" fill="#FFE066"/>
+                    <!-- Sparkles -->
+                    <path d="M30 40 L35 45 L30 50 L25 45 Z" fill="#FFE066" class="animate-ping"/>
+                    <path d="M170 120 L175 125 L170 130 L165 125 Z" fill="#FFE066" class="animate-ping" style="animation-delay: 0.5s;"/>
+                </svg>
+            </div>
+
+            <button onclick="startAdventure()" class="px-8 py-4 bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xl md:text-2xl rounded-full shadow-xl hover:shadow-2xl border-4 border-white transition-all transform hover:scale-105 active:scale-95 flex items-center space-x-3">
+                <span>MULA PENGEMBARAAN</span>
+                <i class="fa-solid fa-circle-play text-2xl"></i>
+            </button>
+        </section>
+
+        <!-- ================= SCREEN 2: PILIH KOTAK AJAIB ================= -->
+        <section id="screen-2" class="w-full hidden flex-col items-center space-y-6">
+            <!-- Progress Bar & Title -->
+            <div class="w-full max-w-md bg-white/70 rounded-full p-2 border-2 border-white shadow-inner flex items-center space-x-3">
+                <div class="flex-1 bg-gray-200 h-5 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-gradient-to-r from-pink-500 to-yellow-400 h-full w-0 transition-all duration-500"></div>
+                </div>
+                <span id="progress-text" class="font-bold text-indigo-900 text-sm">0/5 Kotak</span>
+            </div>
+
+            <h2 class="text-2xl md:text-3xl font-extrabold text-indigo-900 text-center">Pilih Satu Kotak Ajaib!</h2>
+
+            <!-- 5 Grid Gift Boxes -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 w-full max-w-3xl px-2">
+                <!-- Box 1 -->
+                <div id="box-card-1" onclick="openBoxDetail(1)" class="box-3d cursor-pointer glass-card rounded-2xl p-4 flex flex-col items-center justify-center relative border-4 border-pink-300 hover:border-pink-500">
+                    <div id="badge-1" class="hidden absolute -top-3 -right-3 bg-amber-400 text-white p-2 rounded-full shadow-lg border-2 border-white">
+                        <i class="fa-solid fa-star text-lg"></i>
+                    </div>
+                    <svg class="w-24 h-24 my-2" viewBox="0 0 100 100">
+                        <rect x="20" y="40" width="60" height="45" rx="8" fill="#FF6B6B"/>
+                        <rect x="42" y="40" width="16" height="45" fill="#FFE66D"/>
+                        <rect x="15" y="30" width="70" height="15" rx="5" fill="#FF8E8E"/>
+                        <rect x="42" y="30" width="16" height="15" fill="#FFE66D"/>
+                        <circle cx="50" cy="28" r="6" fill="#FFE66D"/>
+                    </svg>
+                    <span class="font-extrabold text-xl text-pink-600 bg-pink-100 px-4 py-1 rounded-full border border-pink-300">Kotak 1</span>
+                </div>
+
+                <!-- Box 2 -->
+                <div id="box-card-2" onclick="openBoxDetail(2)" class="box-3d cursor-pointer glass-card rounded-2xl p-4 flex flex-col items-center justify-center relative border-4 border-sky-300 hover:border-sky-500">
+                    <div id="badge-2" class="hidden absolute -top-3 -right-3 bg-amber-400 text-white p-2 rounded-full shadow-lg border-2 border-white">
+                        <i class="fa-solid fa-star text-lg"></i>
+                    </div>
+                    <svg class="w-24 h-24 my-2" viewBox="0 0 100 100">
+                        <rect x="20" y="40" width="60" height="45" rx="8" fill="#4ECDC4"/>
+                        <rect x="42" y="40" width="16" height="45" fill="#FFE66D"/>
+                        <rect x="15" y="30" width="70" height="15" rx="5" fill="#72E0D8"/>
+                        <rect x="42" y="30" width="16" height="15" fill="#FFE66D"/>
+                        <circle cx="50" cy="28" r="6" fill="#FFE66D"/>
+                    </svg>
+                    <span class="font-extrabold text-xl text-teal-700 bg-teal-100 px-4 py-1 rounded-full border border-teal-300">Kotak 2</span>
+                </div>
+
+                <!-- Box 3 -->
+                <div id="box-card-3" onclick="openBoxDetail(3)" class="box-3d cursor-pointer glass-card rounded-2xl p-4 flex flex-col items-center justify-center relative border-4 border-emerald-300 hover:border-emerald-500">
+                    <div id="badge-3" class="hidden absolute -top-3 -right-3 bg-amber-400 text-white p-2 rounded-full shadow-lg border-2 border-white">
+                        <i class="fa-solid fa-star text-lg"></i>
+                    </div>
+                    <svg class="w-24 h-24 my-2" viewBox="0 0 100 100">
+                        <rect x="20" y="40" width="60" height="45" rx="8" fill="#A8E6CF"/>
+                        <rect x="42" y="40" width="16" height="45" fill="#FF8B94"/>
+                        <rect x="15" y="30" width="70" height="15" rx="5" fill="#DCEDC1"/>
+                        <rect x="42" y="30" width="16" height="15" fill="#FF8B94"/>
+                        <circle cx="50" cy="28" r="6" fill="#FF8B94"/>
+                    </svg>
+                    <span class="font-extrabold text-xl text-emerald-700 bg-emerald-100 px-4 py-1 rounded-full border border-emerald-300">Kotak 3</span>
+                </div>
+
+                <!-- Box 4 -->
+                <div id="box-card-4" onclick="openBoxDetail(4)" class="box-3d cursor-pointer glass-card rounded-2xl p-4 flex flex-col items-center justify-center relative border-4 border-purple-300 hover:border-purple-500">
+                    <div id="badge-4" class="hidden absolute -top-3 -right-3 bg-amber-400 text-white p-2 rounded-full shadow-lg border-2 border-white">
+                        <i class="fa-solid fa-star text-lg"></i>
+                    </div>
+                    <svg class="w-24 h-24 my-2" viewBox="0 0 100 100">
+                        <rect x="20" y="40" width="60" height="45" rx="8" fill="#D4A5A5"/>
+                        <rect x="42" y="40" width="16" height="45" fill="#FFE66D"/>
+                        <rect x="15" y="30" width="70" height="15" rx="5" fill="#E8A7A7"/>
+                        <rect x="42" y="30" width="16" height="15" fill="#FFE66D"/>
+                        <circle cx="50" cy="28" r="6" fill="#FFE66D"/>
+                    </svg>
+                    <span class="font-extrabold text-xl text-purple-700 bg-purple-100 px-4 py-1 rounded-full border border-purple-300">Kotak 4</span>
+                </div>
+
+                <!-- Box 5 -->
+                <div id="box-card-5" onclick="openBoxDetail(5)" class="box-3d cursor-pointer glass-card rounded-2xl p-4 flex flex-col items-center justify-center relative border-4 border-amber-300 hover:border-amber-500 col-span-2 md:col-span-1">
+                    <div id="badge-5" class="hidden absolute -top-3 -right-3 bg-amber-400 text-white p-2 rounded-full shadow-lg border-2 border-white">
+                        <i class="fa-solid fa-star text-lg"></i>
+                    </div>
+                    <svg class="w-24 h-24 my-2" viewBox="0 0 100 100">
+                        <rect x="20" y="40" width="60" height="45" rx="8" fill="#FFD97D"/>
+                        <rect x="42" y="40" width="16" height="45" fill="#6C5CE7"/>
+                        <rect x="15" y="30" width="70" height="15" rx="5" fill="#FFE08A"/>
+                        <rect x="42" y="30" width="16" height="15" fill="#6C5CE7"/>
+                        <circle cx="50" cy="28" r="6" fill="#6C5CE7"/>
+                    </svg>
+                    <span class="font-extrabold text-xl text-amber-700 bg-amber-100 px-4 py-1 rounded-full border border-amber-300">Kotak 5</span>
+                </div>
+            </div>
+
+            <!-- Complete Button (Shown after all 5 opened) -->
+            <button id="btn-reveal-finale" onclick="goToFinale()" class="hidden px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-extrabold text-2xl rounded-full shadow-2xl border-4 border-white transition-all transform hover:scale-105 active:scale-95 pulse-glow">
+                <span>RAHSIA TERBONGKAR!</span>
+                <i class="fa-solid fa-key ml-2"></i>
+            </button>
+        </section>
+
+        <!-- ================= SCREEN 3: RAHSIA KOTAK AJAIB ================= -->
+        <section id="screen-3" class="w-full hidden flex-col items-center space-y-4">
+            <div class="glass-card rounded-3xl p-4 md:p-6 w-full max-w-2xl flex flex-col items-center text-center space-y-4 border-4 border-white">
+                <!-- Title Indicator -->
+                <div class="flex items-center justify-between w-full border-b-2 border-slate-200 pb-2">
+                    <span id="detail-box-title" class="font-extrabold text-xl md:text-2xl text-pink-600">RAHSIA KOTAK 1</span>
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-3 py-1 rounded-full">Set Induksi</span>
+                </div>
+
+                <!-- High-definition 3D SVG Illustration Box -->
+                <div id="illustration-container" class="w-full h-56 md:h-64 bg-gradient-to-b from-sky-100 to-indigo-50 rounded-2xl flex items-center justify-center p-2 shadow-inner border-2 border-indigo-100 relative overflow-hidden">
+                    <!-- Dynamic SVG inserted via JS -->
+                </div>
+
+                <!-- Audio Interactive Buttons -->
+                <div class="flex flex-wrap justify-center gap-3 w-full">
+                    <button onclick="speakQuestion()" class="flex-1 min-w-[140px] px-4 py-3 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-xl shadow-md border-2 border-white transition transform active:scale-95 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-circle-question text-lg"></i>
+                        <span>Dengar Soalan</span>
+                    </button>
+
+                    <button id="btn-show-answer" onclick="revealAnswer()" class="flex-1 min-w-[140px] px-4 py-3 bg-amber-400 hover:bg-amber-500 text-white font-bold rounded-xl shadow-md border-2 border-white transition transform active:scale-95 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-eye text-lg"></i>
+                        <span>Lihat Jawapan</span>
+                    </button>
+
+                    <button id="btn-speak-answer" onclick="speakAnswer()" class="hidden flex-1 min-w-[140px] px-4 py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md border-2 border-white transition transform active:scale-95 items-center justify-center space-x-2">
+                        <i class="fa-solid fa-volume-low text-lg"></i>
+                        <span>Dengar Jawapan</span>
+                    </button>
+                </div>
+
+                <!-- Answer Text Display -->
+                <div id="answer-box" class="hidden w-full bg-emerald-100 border-2 border-emerald-400 p-3 rounded-xl text-emerald-900 font-extrabold text-lg md:text-xl animate-bounce">
+                    <span id="answer-text">Memberus Gigi</span>
+                </div>
+
+                <!-- Back to Boxes Grid Button -->
+                <button onclick="backToGrid()" class="mt-2 px-6 py-2.5 bg-slate-600 hover:bg-slate-700 text-white font-bold rounded-full shadow-lg border-2 border-white transition transform active:scale-95 flex items-center space-x-2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Kembali ke Kotak</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= SCREEN 4: RAHSIA TERBONGKAR! (FINALE) ================= -->
+        <section id="screen-4" class="w-full hidden flex-col items-center text-center space-y-6 relative">
+            <div class="glass-card rounded-3xl p-6 md:p-8 w-full max-w-3xl flex flex-col items-center space-y-6 border-4 border-yellow-300 shadow-2xl">
+                <!-- Celebration Header -->
+                <div class="space-y-2">
+                    <span class="bg-amber-400 text-white font-extrabold text-sm px-4 py-1.5 ro
+<```>
